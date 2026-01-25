@@ -284,7 +284,35 @@ function addCart(p){
 }
 function openCart(){cartBox.style.display="block"}
 function closeCart(){cartBox.style.display="none"}
-function checkoutWA(){}
+
+/* ===== INI SATU-SATUNYA BAGIAN YANG DIPERBAIKI ===== */
+function checkoutWA(){
+if(cart.length===0){
+alert("Keranjang masih kosong");
+return;
+}
+
+
+let text="Halo, saya mau order:%0A%0A";
+let total=0;
+
+
+cart.forEach((p,i)=>{
+const sub=p.harga*p.qty;
+total+=sub;
+text+=`${i+1}. ${p.nama}%0A`;
+text+=`Qty: ${p.qty}%0A`;
+text+=`Subtotal: Rp ${sub.toLocaleString("id-ID")}%0A%0A`;
+});
+
+
+text+=`TOTAL: Rp ${total.toLocaleString("id-ID")}`;
+
+
+const wa=cart[0].wa || "628xxxxxxxxxx";
+window.open(`https://wa.me/${wa}?text=${text}`,"_blank");
+}
+/* ================================================ */
 
 /* SEARCH */
 search.oninput=function(){
