@@ -52,6 +52,28 @@ header img{width:42px}
   cursor:pointer;
   transition:.3s;
 }
+
+/* TENGAHKAN TEKS KATEGORI, BRAND, PRODUK */
+.card h3,
+.card h2,
+.card p,
+.price,
+#judul {
+  text-align: center;
+}
+
+/* DETAIL PRODUK */
+.card ul {
+  text-align: left;        /* biar spesifikasi tetap rapi */
+  margin: 12px auto;
+  padding-left: 20px;
+}
+
+.card img {
+  display: block;
+  margin: 0 auto;
+}
+
 .card:hover{transform:translateY(-5px)}
 .card img{width:100%;height:140px;object-fit:contain}
 .img-produk{cursor:zoom-in}
@@ -265,7 +287,13 @@ function tampilDetail(id){
       <h2>${p.nama}</h2>
       <div class="price">Rp ${Number(p.harga).toLocaleString("id-ID")}</div>
       <ul>${p.spek.split(";").map(s=>`<li>${s}</li>`).join("")}</ul>
-      <button class="btn-cart" onclick='addCart(${JSON.stringify(p)})'>+ Tambah ke Keranjang</button>
+
+      <!-- TAMBAHAN QTY + - -->
+<div style="display:flex;gap:10px;justify-content:center;margin-top:10px">
+  <button class="btn-cart" onclick="ubahQty('${p.id}',-1)">−</button>
+  <div id="qty-${p.id}" style="font-size:18px;font-weight:bold;line-height:48px">0</div>
+  <button class="btn-cart" onclick="ubahQty('${p.id}',1)">+</button>
+</div>
     </div>`;
 }
 
@@ -280,9 +308,54 @@ function navBack(){
 function addCart(p){
   const i=cart.find(x=>x.id===p.id);
   i?i.qty++:cart.push({...p,qty:1});
-  cartCount.innerText=cart.reduce((a,b)=>a+b.qty,0);
+ updateCart();
 }
-function openCart(){cartBox.style.display="block"}
+
+
+/* TAMBAHAN */
+function ubahQty(id,delta){
+const p=produk.find(x=>x.id===id);
+let item=cart.find(x=>x.id===id);
+
+
+if(!item && delta>0){
+cart.push({...p,qty:1});
+item=cart.find(x=>x.id===id);
+}else if(item){
+item.qty+=delta;
+if(item.qty<=0){
+cart=cart.filter(x=>x.id!==id);
+item=null;
+}
+}
+
+
+const el=document.getElementById("qty-"+id);
+if(el) el.innerText=item?item.qty:0;
+updateCart();
+}
+
+
+function updateCart(){
+cartCount.innerText=cart.reduce((a,b)=>a+b.qty,0);
+}
+
+
+function openCart(){
+cartBox.style.display="block";
+cartList.innerHTML="";
+let total=0;
+cart.forEach(p=>{
+const sub=p.qty*p.harga;
+total+=sub;
+cartList.innerHTML+=`
+<div class="cart-item">
+<div>${p.nama} (${p.qty})</div>
+<div>Rp ${sub.toLocaleString("id-ID")}</div>
+</div>`;
+});
+cartTotal.innerText="TOTAL: Rp "+total.toLocaleString("id-ID");
+}
 function closeCart(){cartBox.style.display="none"}
 
 /* ===== INI SATU-SATUNYA BAGIAN YANG DIPERBAIKI ===== */
