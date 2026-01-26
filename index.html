@@ -39,6 +39,40 @@ header img{width:42px}
   border:none;
 }
 
+/* 🔴 RUNNING TEXT */
+/* ===== RUNNING TEXT FIX FINAL ===== */
+.running-text{
+  margin:18px auto 0;
+  max-width:520px;
+  overflow:hidden;
+  background:rgba(225,29,72,.15);
+  border:1px solid rgba(225,29,72,.4);
+  border-radius:12px;
+  padding:10px 0;
+}
+
+.running-track{
+  display:flex;
+  width:max-content;
+  white-space:nowrap;
+  animation:marquee 18s linear infinite;
+  will-change:transform;
+  color:#facc15;
+  font-weight:600;
+  font-size:14px;
+}
+
+@keyframes marquee{
+  from{
+    transform:translateX(100%);
+  }
+  to{
+    transform:translateX(-100%);
+  }
+}
+/* ================================ */
+
+
 .container{padding:30px}
 .grid{
   display:grid;
@@ -169,6 +203,18 @@ footer{
   <div class="search-box">
     <input id="search" placeholder="Cari produk... (contoh: laptop axioo)">
   </div>
+
+  <!-- 🔴 TAMBAHAN: RUNNING TEXT -->
+<div class="running-text">
+  <div class="running-track">
+    ⚠️ HATI-HATI PENIPUAN! 
+Transaksi hanya melalui WA admin resmi FENDY FREELANCE STORE • 
+    WA RESMI HANYA 082153719616 SAJA • 
+    FREE ONGKIR area Singkawang • 
+    Konfirmasi pembayaran langsung ke WA admin resmi •
+  </div>
+</div>
+
 </section>
 
 <section class="container">
