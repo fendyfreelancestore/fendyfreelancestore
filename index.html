@@ -215,6 +215,12 @@ let nav={
   }
 };
 
+let searchState = {
+  aktif: false,
+  keyword: ""
+};
+
+
 function saveScroll(){
   if(nav.level==="kategori"){
     nav.scroll.kategori = window.scrollY;
@@ -335,6 +341,14 @@ function tampilDetail(id){
 
 /* NAV BACK */
 function navBack(){
+  // JIKA DARI DETAIL & SEBELUMNYA SEARCH
+  if(nav.level==="detail" && searchState.aktif){
+    nav.level="search";
+    search.value = searchState.keyword;
+    search.oninput();
+    return;
+  }
+
   if(nav.level==="detail"){
     nav.level="produk";
     tampilProduk(nav.brand,"");
@@ -348,6 +362,7 @@ function navBack(){
     tampilKategori();
   }
 }
+
 
 /* CART */
 function addCart(p){
@@ -435,17 +450,30 @@ window.open(`https://wa.me/${wa}?text=${text}`,"_blank");
 /* SEARCH */
 search.oninput=function(){
   const k=this.value.toLowerCase();
-  if(k.length<2) return tampilKategori();
+
+  if(k.length < 2){
+    searchState.aktif = false;
+    return tampilKategori();
+  }
+
+  searchState.aktif = true;
+  searchState.keyword = k;
+  nav.level = "search";
+
   judul.innerText="Hasil Pencarian";
-  view.innerHTML="";
-  produk.filter(p=>p.nama.toLowerCase().includes(k)).forEach(p=>{
-    view.innerHTML+=`
-      <div class="card" onclick="tampilDetail('${p.id}')">
-        <img src="${p.foto}" class="img-produk">
-        <h3>${p.nama}</h3>
-      </div>`;
-  });
+  view.innerHTML = `<div class="back" onclick="navBack()">⬅ Kembali</div>`;
+
+  produk
+    .filter(p=>p.nama.toLowerCase().includes(k))
+    .forEach(p=>{
+      view.innerHTML+=`
+        <div class="card" onclick="tampilDetail('${p.id}')">
+          <img src="${p.foto}" class="img-produk">
+          <h3>${p.nama}</h3>
+        </div>`;
+    });
 };
+
 
 /* ZOOM */
 function zoomFoto(src){
