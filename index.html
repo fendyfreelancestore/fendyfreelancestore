@@ -201,13 +201,48 @@ const view=document.getElementById("view");
 const judul=document.getElementById("judul");
 const zoom=document.getElementById("zoom");
 const zoomImg=document.getElementById("zoomImg");
-
+ 
 /* NAV STATE */
-let nav={level:"kategori",kategori:null,brand:null,scroll:0};
-function saveScroll(){nav.scroll=window.scrollY}
-function restoreScroll(){
-  setTimeout(()=>window.scrollTo({top:nav.scroll,behavior:"auto"}),0);
+/* ================= FIX SCROLL (TANPA GANGGU KODING LAIN) ================= */
+let nav={
+  level:"kategori",
+  kategori:null,
+  brand:null,
+  scroll:{
+    kategori:0,
+    brand:{},
+    produk:{}
+  }
+};
+
+function saveScroll(){
+  if(nav.level==="kategori"){
+    nav.scroll.kategori = window.scrollY;
+  }
+  else if(nav.level==="brand"){
+    nav.scroll.brand[nav.kategori] = window.scrollY;
+  }
+  else if(nav.level==="produk"){
+    nav.scroll.produk[nav.brand] = window.scrollY;
+  }
 }
+
+function restoreScroll(){
+  let y=0;
+
+  if(nav.level==="kategori"){
+    y = nav.scroll.kategori || 0;
+  }
+  else if(nav.level==="brand"){
+    y = nav.scroll.brand[nav.kategori] || 0;
+  }
+  else if(nav.level==="produk"){
+    y = nav.scroll.produk[nav.brand] || 0;
+  }
+
+  setTimeout(()=>window.scrollTo({top:y,behavior:"auto"}),0);
+}
+/* ================= END FIX SCROLL ================= */
 
 /* LOAD CSV */
 fetch("kategori.csv").then(r=>r.text()).then(t=>{
@@ -261,6 +296,7 @@ function tampilBrand(id,nama){
 }
 
 function tampilProduk(id,nama){
+  saveScroll(); //
   nav.level="produk";
   judul.innerText=nama;
   view.innerHTML=`<div class="back" onclick="navBack()">⬅ Kembali</div>`;
@@ -299,9 +335,18 @@ function tampilDetail(id){
 
 /* NAV BACK */
 function navBack(){
-  if(nav.level==="detail") tampilProduk(nav.brand,"");
-  else if(nav.level==="produk") tampilBrand(nav.kategori,"");
-  else tampilKategori();
+  if(nav.level==="detail"){
+    nav.level="produk";
+    tampilProduk(nav.brand,"");
+  }
+  else if(nav.level==="produk"){
+    nav.level="brand";
+    tampilBrand(nav.kategori,"");
+  }
+  else{
+    nav.level="kategori";
+    tampilKategori();
+  }
 }
 
 /* CART */
