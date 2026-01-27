@@ -531,23 +531,32 @@ zoom.onclick=()=>zoom.style.display="none";
 
 /* ================================================= */
 /* ===== FIX FOTO PRODUK (PC & MOBILE, TANPA UBAH HTML) ===== */
-document.addEventListener("click",function(e){
-  const img=e.target.closest(".img-produk");
+/* ================================================= */
+/* ===== ZOOM FOTO AKTIF HANYA DI HALAMAN DETAIL ===== */
+document.addEventListener("click", function(e){
+  const img = e.target.closest(".img-produk");
   if(!img) return;
-  e.preventDefault();
-  e.stopPropagation();
-  e.stopImmediatePropagation();
-  zoomFoto(img.src);
-},true);
 
-document.addEventListener("touchstart",function(e){
-  const img=e.target.closest(".img-produk");
-  if(!img) return;
+  // ❌ selain halaman detail → MATI
+  if(nav.level !== "detail") return;
+
   e.preventDefault();
   e.stopPropagation();
   e.stopImmediatePropagation();
   zoomFoto(img.src);
-},{capture:true,passive:false});
+}, true);
+
+document.addEventListener("touchstart", function(e){
+  const img = e.target.closest(".img-produk");
+  if(!img) return;
+
+  if(nav.level !== "detail") return;
+
+  e.preventDefault();
+  e.stopPropagation();
+  e.stopImmediatePropagation();
+  zoomFoto(img.src);
+}, { capture:true, passive:false });
 </script>
 
 </body>
