@@ -349,10 +349,10 @@ function tampilBrand(id,nama){
 }
 
 function tampilProduk(id,nama){
-  saveScroll(); //
   nav.level="produk";
   judul.innerText=nama;
   view.innerHTML=`<div class="back" onclick="navBack()">⬅ Kembali</div>`;
+
   produk.filter(p=>p.brand===id).forEach(p=>{
     view.innerHTML+=`
       <div class="card" onclick="tampilDetail('${p.id}')">
@@ -361,7 +361,8 @@ function tampilProduk(id,nama){
         <div class="price">Rp ${Number(p.harga).toLocaleString("id-ID")}</div>
       </div>`;
   });
-  restoreScroll();
+
+  restoreScroll(); // ✅ BALIK KE POSISI TENGAH
 }
 
 function tampilDetail(id){
