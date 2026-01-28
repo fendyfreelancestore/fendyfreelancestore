@@ -248,7 +248,12 @@ const view=document.getElementById("view");
 const judul=document.getElementById("judul");
 const zoom=document.getElementById("zoom");
 const zoomImg=document.getElementById("zoomImg");
- 
+
+
+/* 🔴 TAMBAHAN: WA ADMIN (TIDAK DARI CSV) */
+const WA_ADMIN = "6282153719616";
+
+
 /* NAV STATE */
 /* ================= FIX SCROLL (TANPA GANGGU KODING LAIN) ================= */
 let nav={
@@ -313,8 +318,8 @@ fetch("brand.csv").then(r=>r.text()).then(t=>{
 });
 fetch("produk.csv").then(r=>r.text()).then(t=>{
   produk=t.trim().split("\n").slice(1).map(r=>{
-    const [id,nama,harga,brand,foto,wa,spek]=r.split(",");
-    return {id,nama,harga,brand,foto,wa,spek};
+    const [id,nama,harga,brand,foto,spek]=r.split(",");
+    return {id,nama,harga,brand,foto,spek};
   });
 });
 
@@ -489,10 +494,10 @@ text+=`Subtotal: Rp ${sub.toLocaleString("id-ID")}%0A%0A`;
 
 text+=`TOTAL: Rp ${total.toLocaleString("id-ID")}`;
 
-
-const wa=cart[0].wa || "628xxxxxxxxxx";
-window.open(`https://wa.me/${wa}?text=${text}`,"_blank");
+/* 🔴 DIUBAH: WA TIDAK LAGI DARI CSV */
+window.open(`https://wa.me/${WA_ADMIN}?text=${text}`,"_blank");
 }
+
 /* ================================================ */
 
 /* SEARCH */
