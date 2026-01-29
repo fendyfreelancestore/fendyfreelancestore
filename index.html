@@ -56,20 +56,24 @@ header img{width:42px}
   width:max-content;
   white-space:nowrap;
   animation:marquee 36s linear infinite;
-  will-change:transform;
   color:#facc15;
   font-weight:600;
   font-size:22px;
 }
 
+.running-track span{
+  padding-right:60px; /* jarak antar teks */
+}
+
 @keyframes marquee{
   from{
-    transform:translateX(100%);
+    transform:translateX(0);
   }
   to{
-    transform:translateX(-100%);
+    transform:translateX(-50%);
   }
 }
+
 /* ================================ */
 
 
@@ -207,14 +211,27 @@ footer{
   <!-- 🔴 TAMBAHAN: RUNNING TEXT -->
 <div class="running-text">
   <div class="running-track">
-    ⚠️ HATI-HATI PENIPUAN! 
-Transaksi hanya melalui WA admin resmi FENDY FREELANCE STORE • 
-    WA RESMI HANYA 082153719616 SAJA • 
-    FREE ONGKIR AREA SINGKAWANG • 
-    Konfirmasi pembayaran langsung ke WA admin resmi •
-    Ketersediaan stok tidak selalu ready. Harga dapat berubah sewaktu-waktu tanpa pemberitahuan, menyesuaikan kondisi pasar •
+    <span>
+      ⚠️ HATI-HATI PENIPUAN! 
+      TRANSAKSI HANYA MELALUI WA ADMIN RESMI FENDY FREELANCE STORE • 
+      WA RESMI HANYA 0821-5371-9616 SAJA • 
+      FREE ONGKIR AREA SINGKAWANG DAN SEKITAR • 
+      KONFIRMASI PEMBAYARAN LANGSUNG KE WA ADMIN RESMI•
+      KETERSEDIAAN STOK TIDAK SELALU READY • HARGA DAPAT BERUBAH SEWAKTU-WAKTU TANPA PEMBERITAHUAN •
+    </span>
+
+    <!-- DUPLIKAT -->
+    <span>
+      ⚠️ HATI-HATI PENIPUAN! 
+      TRANSAKSI HANYA MELALUI WA ADMIN RESMI FENDY FREELANCE STORE •
+      WA RESMI HANYA 0821-5371-9616 SAJA • 
+      FREE ONGKIR AREA SINGKAWANG • 
+      KONFIRMASI PEMBAYARAN LANGSUNG KE WA ADMIN RESMI •
+      KETERSEDIAAN STOK TIDAK SELALU READY • HARGA DAPAT BERUBAH SEWAKTU-WAKTU TANPA PEMBERITAHUAN •
+    </span>
   </div>
 </div>
+
 
 </section>
 
