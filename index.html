@@ -82,6 +82,9 @@ header img{width:42px}
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:22px;
+
+  /* 🔴 TAMBAHAN ANTI LAG */
+  will-change: contents;
 }
 .card{
   background:var(--card);
@@ -263,6 +266,9 @@ footer{
 
 let kategori=[], brand=[], produk=[], cart=[];
 let produkSiap = false;
+// 🔴🔴🔴 TAMBAHAN ANTI LAG SEARCH
+let searchTimer = null;
+
 
 // 🔴 WAJIB: GLOBAL SEARCH
 const search = document.getElementById("search");
@@ -596,45 +602,54 @@ window.open(`https://wa.me/${WA_ADMIN}?text=${text}`,"_blank");
 
 /* SEARCH */
 /* ================= SEARCH FIX PALING AMAN ================= */
+/* ================= SEARCH FINAL (ANTI LAG) ================= */
 search.addEventListener("input", function () {
   if (!produkSiap) return;
 
-  const k = this.value.trim().toLowerCase();
+  // 🔴 HENTIKAN PROSES SEBELUMNYA
+  clearTimeout(searchTimer);
 
-  if (k.length < 2) {
-    searchState.aktif = false;
-    nav.level = "kategori";
-    tampilKategori();
-    return;
-  }
+  // 🔴 TUNGGU USER SELESAI NGETIK
+  searchTimer = setTimeout(() => {
 
-  searchState.aktif = true;
-  searchState.keyword = k;
-  nav.level = "search";
+    const k = search.value.trim().toLowerCase();
 
-  judul.innerText = "Hasil Pencarian";
-  view.innerHTML = `<div class="back" onclick="navBack()">⬅ Kembali</div>`;
+    // 🔴 JIKA KURANG DARI 2 HURUF → BALIK KATEGORI
+    if (k.length < 2) {
+      searchState.aktif = false;
+      nav.level = "kategori";
+      tampilKategori();
+      return;
+    }
 
-  const hasil = produk.filter(p =>
-    p.nama && p.nama.toLowerCase().includes(k)
-  );
+    searchState.aktif = true;
+    searchState.keyword = k;
+    nav.level = "search";
 
-  if (hasil.length === 0) {
-    view.innerHTML += `<p style="text-align:center">Produk tidak ditemukan</p>`;
-    return;
-  }
+    judul.innerText = "Hasil Pencarian";
+    view.innerHTML = `<div class="back" onclick="navBack()">⬅ Kembali</div>`;
 
-  hasil.forEach(p=>{
-    view.innerHTML += `
-      <div class="card" onclick="tampilDetail('${p.id}')">
-        <img src="${p.foto}" class="img-produk">
-        <h3>${p.nama}</h3>
-        <div class="price">Rp ${Number(p.harga).toLocaleString("id-ID")}</div>
-      </div>`;
-  });
+    const hasil = produk.filter(p =>
+      p.nama && p.nama.toLowerCase().includes(k)
+    );
+
+    if (hasil.length === 0) {
+      view.innerHTML += `<p style="text-align:center">Produk tidak ditemukan</p>`;
+      return;
+    }
+
+    hasil.forEach(p=>{
+      view.innerHTML += `
+        <div class="card" onclick="tampilDetail('${p.id}')">
+          <img src="${p.foto}" class="img-produk">
+          <h3>${p.nama}</h3>
+          <div class="price">Rp ${Number(p.harga).toLocaleString("id-ID")}</div>
+        </div>`;
+    });
+
+  }, 300); // ⏱️ 300ms = HALUS
 });
-/* ========================================================== */
-
+/* =========================================================== */
 
 /* ZOOM */
 function zoomFoto(src){
