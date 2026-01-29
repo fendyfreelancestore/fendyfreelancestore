@@ -260,7 +260,13 @@ footer{
 <footer>© 2026 Fendy Freelance Store</footer>
 
 <script>
+
 let kategori=[], brand=[], produk=[], cart=[];
+let produkSiap = false;
+
+// 🔴 WAJIB: GLOBAL SEARCH
+const search = document.getElementById("search");
+
 const view=document.getElementById("view");
 const judul=document.getElementById("judul");
 const zoom=document.getElementById("zoom");
@@ -286,7 +292,8 @@ let nav={
 
 let searchState = {
   aktif: false,
-  keyword: ""
+  keyword: "",
+  scroll: 0        //
 };
 
 
@@ -333,12 +340,18 @@ fetch("brand.csv").then(r=>r.text()).then(t=>{
     return {id,nama,kategori,foto};
   });
 });
-fetch("produk.csv").then(r=>r.text()).then(t=>{
-  produk=t.trim().split("\n").slice(1).map(r=>{
-    const [id,nama,harga,brand,foto,spek]=r.split(",");
+fetch("produk.csv")
+.then(r=>r.text())
+.then(t=>{
+  produk = t.trim().split("\n").slice(1).map(r=>{
+    const [id,nama,harga,brand,foto,spek] = r.split(",");
     return {id,nama,harga,brand,foto,spek};
   });
+
+  produkSiap = true; // ✅ BARU BOLEH SEARCH
 });
+
+
 
 /* VIEW */
 function tampilKategori(){
@@ -388,7 +401,14 @@ function tampilProduk(id,nama){
 }
 
 function tampilDetail(id){
-  saveScroll();
+
+  // 🔴🔴🔴 JIKA DARI SEARCH, SIMPAN SCROLL SEARCH
+  if(searchState.aktif){
+    searchState.scroll = window.scrollY;
+  }else{
+    saveScroll(); // default kategori / brand / produk
+  }
+
   nav.level="detail";
   const p=produk.find(x=>x.id===id);
   judul.innerText=p.nama;
@@ -411,11 +431,11 @@ function tampilDetail(id){
 
 /* NAV BACK */
 function navBack(){
-  // JIKA DARI DETAIL & SEBELUMNYA SEARCH
+
+  // 🔴🔴🔴 PRIORITAS SEARCH
   if(nav.level==="detail" && searchState.aktif){
     nav.level="search";
-    search.value = searchState.keyword;
-    search.oninput();
+    renderSearchUlang();
     return;
   }
 
@@ -431,6 +451,63 @@ function navBack(){
     nav.level="kategori";
     tampilKategori();
   }
+}
+/* 🔴🔴🔴 RESTORE SEARCH 🔴🔴🔴 */
+function renderSearchUlang(){
+  judul.innerText = "Hasil Pencarian";
+  view.innerHTML = `<div class="back" onclick="navBack()">⬅ Kembali</div>`;
+
+  const hasil = produk.filter(p =>
+    p.nama && p.nama.toLowerCase().includes(searchState.keyword)
+  );
+
+  if(hasil.length===0){
+    view.innerHTML+=`<p style="text-align:center">Produk tidak ditemukan</p>`;
+    return;
+  }
+
+  hasil.forEach(p=>{
+    view.innerHTML+=`
+      <div class="card" onclick="tampilDetail('${p.id}')">
+        <img src="${p.foto}">
+        <h3>${p.nama}</h3>
+        <div class="price">Rp ${Number(p.harga).toLocaleString("id-ID")}</div>
+      </div>`;
+  });
+
+  // 🔴🔴🔴 BALIK KE POSISI AWAL
+  setTimeout(()=>{
+    window.scrollTo({top:searchState.scroll,behavior:"auto"});
+  },0);
+}
+
+/* ================= RESTORE SEARCH TANPA REFRESH ================= */
+function renderSearchUlang(){
+  judul.innerText = "Hasil Pencarian";
+  view.innerHTML = `<div class="back" onclick="navBack()">⬅ Kembali</div>`;
+
+  const hasil = produk.filter(p =>
+    p.nama && p.nama.toLowerCase().includes(searchState.keyword)
+  );
+
+  if(hasil.length === 0){
+    view.innerHTML += `<p style="text-align:center">Produk tidak ditemukan</p>`;
+    return;
+  }
+
+  hasil.forEach(p=>{
+    view.innerHTML += `
+      <div class="card" onclick="tampilDetail('${p.id}')">
+        <img src="${p.foto}" class="img-produk">
+        <h3>${p.nama}</h3>
+        <div class="price">Rp ${Number(p.harga).toLocaleString("id-ID")}</div>
+      </div>`;
+  });
+
+  // 🔴🔴🔴 BALIK KE POSISI SAAT PRODUK DIKLIK
+  setTimeout(()=>{
+    window.scrollTo({top:searchState.scroll,behavior:"auto"});
+  },0);
 }
 
 
@@ -518,31 +595,45 @@ window.open(`https://wa.me/${WA_ADMIN}?text=${text}`,"_blank");
 /* ================================================ */
 
 /* SEARCH */
-search.oninput=function(){
-  const k=this.value.toLowerCase();
+/* ================= SEARCH FIX PALING AMAN ================= */
+search.addEventListener("input", function () {
+  if (!produkSiap) return;
 
-  if(k.length < 2){
+  const k = this.value.trim().toLowerCase();
+
+  if (k.length < 2) {
     searchState.aktif = false;
-    return tampilKategori();
+    nav.level = "kategori";
+    tampilKategori();
+    return;
   }
 
   searchState.aktif = true;
   searchState.keyword = k;
   nav.level = "search";
 
-  judul.innerText="Hasil Pencarian";
+  judul.innerText = "Hasil Pencarian";
   view.innerHTML = `<div class="back" onclick="navBack()">⬅ Kembali</div>`;
 
-  produk
-    .filter(p=>p.nama.toLowerCase().includes(k))
-    .forEach(p=>{
-      view.innerHTML+=`
-        <div class="card" onclick="tampilDetail('${p.id}')">
-          <img src="${p.foto}" class="img-produk">
-          <h3>${p.nama}</h3>
-        </div>`;
-    });
-};
+  const hasil = produk.filter(p =>
+    p.nama && p.nama.toLowerCase().includes(k)
+  );
+
+  if (hasil.length === 0) {
+    view.innerHTML += `<p style="text-align:center">Produk tidak ditemukan</p>`;
+    return;
+  }
+
+  hasil.forEach(p=>{
+    view.innerHTML += `
+      <div class="card" onclick="tampilDetail('${p.id}')">
+        <img src="${p.foto}" class="img-produk">
+        <h3>${p.nama}</h3>
+        <div class="price">Rp ${Number(p.harga).toLocaleString("id-ID")}</div>
+      </div>`;
+  });
+});
+/* ========================================================== */
 
 
 /* ZOOM */
