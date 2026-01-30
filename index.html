@@ -76,6 +76,121 @@ header img{width:42px}
 
 /* ================================ */
 
+/* 🔴🔴🔴 PROMO STYLE START (SMALL + RICH) 🔴🔴🔴 */
+.promo-box{
+  margin:20px auto;
+  max-width:1100px;
+  padding:16px;
+  background:linear-gradient(135deg,#020617,#1e293b);
+  border-radius:18px;
+  border:2px solid #facc15;
+  position:relative;
+  overflow:hidden;
+}
+
+/* efek kilap jalan */
+.promo-box::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(250,204,21,.25) 50%,
+    transparent 100%
+  );
+  animation:shine 4s infinite;
+}
+
+@keyframes shine{
+  from{transform:translateX(-100%)}
+  to{transform:translateX(100%)}
+}
+
+.promo-title{
+  text-align:center;
+  font-size:20px;
+  font-weight:800;
+  margin-bottom:14px;
+  color:#facc15;
+  letter-spacing:1px;
+}
+
+/* 🔴 FIX KOLOM PROMO JADI LEBIH KECIL */
+.promo-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:12px;
+}
+
+
+.promo-grid .card{
+  padding:14px;
+  position:relative;
+  border:1px solid rgba(250,204,21,.4);
+}
+/* 🔴 PERKECIL CARD PROMO */
+.promo-grid .card{
+  padding:12px;
+  border-radius:14px;
+}
+
+
+/* badge promo */
+.promo-grid .card::after{
+  content:"PROMO";
+  position:absolute;
+  top:10px;
+  right:10px;
+  background:#dc2626;
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:4px 8px;
+  border-radius:999px;
+  animation:blink 1.6s infinite;
+}
+
+@keyframes blink{
+  0%,100%{opacity:1}
+  50%{opacity:.5}
+}
+
+/* 🔴 KHUSUS GAMBAR PROMO */
+.promo-grid img{
+  height:110px;
+  object-fit:contain;
+}
+.container{
+  padding:30px;
+}
+/* 🔴 TEKS PROMO LEBIH KECIL */
+.promo-grid h3{
+  font-size:14px;
+  margin:6px 0;
+}
+
+.price-promo{
+  font-size:16px;
+}
+
+.price-normal{
+  font-size:12px;
+}
+
+.price-normal{
+  text-decoration:line-through;
+  color:#94a3b8;
+  font-size:13px;
+}
+
+.price-promo{
+  font-size:18px;
+  font-weight:800;
+  color:#22c55e;
+}
+/* 🔴🔴🔴 PROMO STYLE END 🔴🔴🔴 */
+
 
 .container{padding:30px}
 .grid{
@@ -237,6 +352,13 @@ footer{
 
 
 </section>
+<!-- 🔴 PROMO / FLASH SALE (AUTO HIDE) -->
+<section id="promoSection" style="display:none">
+  <div class="promo-box">
+    <div class="promo-title">🔥 PROMO TERBATAS 🔥</div>
+    <div id="promoView" class="promo-grid"></div>
+  </div>
+</section>
 
 <section class="container">
   <h2 id="judul">Kategori Produk</h2>
@@ -350,13 +472,21 @@ fetch("produk.csv")
 .then(r=>r.text())
 .then(t=>{
   produk = t.trim().split("\n").slice(1).map(r=>{
-    const [id,nama,harga,brand,foto,spek] = r.split(",");
-    return {id,nama,harga,brand,foto,spek};
+    const [id,nama,harga,brand,foto,spek,harga_promo] = r.split(",");
+    return {
+      id,
+      nama,
+      harga:Number(harga),
+      brand,
+      foto,
+      spek,
+      harga_promo: harga_promo ? Number(harga_promo) : 0
+    };
   });
 
-  produkSiap = true; // ✅ BARU BOLEH SEARCH
+  produkSiap = true;
+  tampilPromo(); // 🔴 PANGGIL PROMO
 });
-
 
 
 /* VIEW */
@@ -405,6 +535,35 @@ function tampilProduk(id,nama){
 
   restoreScroll(); // ✅ BALIK KE POSISI TENGAH
 }
+
+/* 🔴🔴🔴 PROMO FUNCTION START 🔴🔴🔴 */
+function tampilPromo(){
+  const promo=produk.filter(p=>p.harga_promo>0 && p.harga_promo<p.harga);
+  const section=document.getElementById("promoSection");
+  const pv=document.getElementById("promoView");
+
+  if(promo.length===0){
+    section.style.display="none";
+    return;
+  }
+
+  section.style.display="block";
+  pv.innerHTML="";
+
+  promo.forEach(p=>{
+    const diskon=Math.round(((p.harga-p.harga_promo)/p.harga)*100);
+    pv.innerHTML+=`
+    <div class="card">
+      <img src="${p.foto}">
+      <h3>${p.nama}</h3>
+      <div class="price-normal">Rp ${p.harga.toLocaleString("id-ID")}</div>
+      <div class="price-promo">Rp ${p.harga_promo.toLocaleString("id-ID")}</div>
+      <div style="font-size:12px;color:#facc15">Hemat ${diskon}%</div>
+    </div>`;
+  });
+}
+/* 🔴🔴🔴 PROMO FUNCTION END 🔴🔴🔴 */
+
 
 function tampilDetail(id){
 
