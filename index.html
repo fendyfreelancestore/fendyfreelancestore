@@ -121,10 +121,29 @@ header img{width:42px}
 }
 
 /* 🔴 FIX KOLOM PROMO JADI LEBIH KECIL */
+/* 🔴🔴🔴 PROMO SCROLL KE SAMPING (KANAN ↔ KIRI) 🔴🔴🔴 */
 .promo-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:12px;
+  display:flex;              /* ⬅ bukan grid */
+  gap:14px;
+  overflow-x:auto;           /* ⬅ scroll kanan kiri */
+  padding-bottom:10px;
+  scroll-snap-type:x mandatory;
+}
+
+/* sembunyikan scrollbar tapi tetap bisa scroll */
+.promo-grid::-webkit-scrollbar{
+  height:6px;
+}
+.promo-grid::-webkit-scrollbar-thumb{
+  background:#facc15;
+  border-radius:10px;
+}
+
+/* 🔴 SETIAP CARD PROMO */
+.promo-grid .card{
+  min-width:180px;           /* ⬅ ukuran card */
+  flex-shrink:0;             /* ⬅ jangan mengecil */
+  scroll-snap-align:start;
 }
 
 
@@ -633,8 +652,25 @@ function tampilDetail(id){
     </div>`;
 }
 
+/* 🔴 RESET SEARCH INPUT */
+function resetSearch(){
+  search.value = "";          // kosongkan input
+  searchState.aktif = false;
+  searchState.keyword = "";
+  searchState.scroll = 0;
+}
+
+
 /* NAV BACK */
 function navBack(){
+  /* 🔴 JIKA DARI SEARCH & KEMBALI KE KATEGORI */
+  if(nav.level === "search"){
+    resetSearch();          // ⬅ AUTO HILANGKAN TEKS SEARCH
+    nav.level = "kategori";
+    tampilKategori();
+    restoreScroll();
+    return;
+  }
 
   if(nav.level==="detail" && searchState.aktif){
     nav.level="search";
