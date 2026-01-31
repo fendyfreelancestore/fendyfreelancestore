@@ -17,36 +17,10 @@ body{
   font-family:Segoe UI,Arial,sans-serif;
   color:var(--text);
   min-height:100vh;
-
-  background:#020617; /* ⬅ warna dasar anti putih */
-  overflow-x:hidden;
-}
-
-
-/* 🔴 BACKGROUND DIKUNCI DI LAYER SENDIRI */
-.bg-wrap{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  z-index:-1;
-
   background:
     linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
-    url("bg.jpg") center/cover no-repeat;
-
-  transform:translateZ(0); /* 🔥 fix white flash mobile */
+    url("bg.jpg") center/cover no-repeat fixed;
 }
-
-@media (max-width:768px){
-  .bg-wrap{
-    background:
-      linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
-      url("bg.jpg") center/contain no-repeat;
-  }
-}
-
 header{
   display:flex;
   align-items:center;
@@ -65,7 +39,8 @@ header img{width:42px}
   border:none;
 }
 
-/* ===== RUNNING TEXT FINAL (ANTI LOMPAT & ANTI KETIMPAK) ===== */
+/* 🔴 RUNNING TEXT */
+/* ===== RUNNING TEXT FIX FINAL ===== */
 .running-text{
   margin:18px auto 0;
   max-width:520px;
@@ -76,169 +51,30 @@ header img{width:42px}
   padding:10px 0;
 }
 
-.marquee{
+.running-track{
   display:flex;
   width:max-content;
-  overflow:hidden;
-}
-
-.marquee__group{
-  display:flex;
   white-space:nowrap;
-  animation: scroll 32s linear infinite;
-}
-
-.marquee__group span{
-  padding-right:60px;
+  animation:marquee 36s linear infinite;
   color:#facc15;
   font-weight:600;
   font-size:22px;
 }
 
-@keyframes scroll{
+.running-track span{
+  padding-right:60px; /* jarak antar teks */
+}
+
+@keyframes marquee{
   from{
-    transform: translateX(0);
+    transform:translateX(0);
   }
   to{
-    transform: translateX(-100%);
+    transform:translateX(-50%);
   }
 }
 
-
-
-/* 🔴🔴🔴 PROMO STYLE START (SMALL + RICH) 🔴🔴🔴 */
-.promo-box{
-  margin:20px auto;
-  max-width:1100px;
-  padding:16px;
-  background:linear-gradient(135deg,#020617,#1e293b);
-  border-radius:18px;
-  border:2px solid #facc15;
-  position:relative;
-  overflow:hidden;
-}
-
-/* efek kilap jalan */
-.promo-box::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(250,204,21,.25) 50%,
-    transparent 100%
-  );
-  animation:shine 4s infinite;
-}
-
-@keyframes shine{
-  from{transform:translateX(-100%)}
-  to{transform:translateX(100%)}
-}
-
-.promo-title{
-  text-align:center;
-  font-size:20px;
-  font-weight:800;
-  margin-bottom:14px;
-  color:#facc15;
-  letter-spacing:1px;
-}
-
-/* 🔴 FIX KOLOM PROMO JADI LEBIH KECIL */
-/* 🔴🔴🔴 PROMO SCROLL KE SAMPING (KANAN ↔ KIRI) 🔴🔴🔴 */
-.promo-grid{
-  display:flex;              /* ⬅ bukan grid */
-  gap:14px;
-  overflow-x:auto;           /* ⬅ scroll kanan kiri */
-  padding-bottom:10px;
-  scroll-snap-type:x mandatory;
-}
-
-/* sembunyikan scrollbar tapi tetap bisa scroll */
-.promo-grid::-webkit-scrollbar{
-  height:6px;
-}
-.promo-grid::-webkit-scrollbar-thumb{
-  background:#facc15;
-  border-radius:10px;
-}
-
-/* 🔴 SETIAP CARD PROMO */
-.promo-grid .card{
-  min-width:180px;           /* ⬅ ukuran card */
-  flex-shrink:0;             /* ⬅ jangan mengecil */
-  scroll-snap-align:start;
-}
-
-
-.promo-grid .card{
-  padding:14px;
-  position:relative;
-  border:1px solid rgba(250,204,21,.4);
-}
-/* 🔴 PERKECIL CARD PROMO */
-.promo-grid .card{
-  padding:12px;
-  border-radius:14px;
-}
-
-
-/* badge promo */
-.promo-grid .card::after{
-  content:"PROMO";
-  position:absolute;
-  top:10px;
-  right:10px;
-  background:#dc2626;
-  color:#fff;
-  font-size:11px;
-  font-weight:700;
-  padding:4px 8px;
-  border-radius:999px;
-  animation:blink 1.6s infinite;
-}
-
-@keyframes blink{
-  0%,100%{opacity:1}
-  50%{opacity:.5}
-}
-
-/* 🔴 KHUSUS GAMBAR PROMO */
-.promo-grid img{
-  height:110px;
-  object-fit:contain;
-}
-.container{
-  padding:30px;
-}
-/* 🔴 TEKS PROMO LEBIH KECIL */
-.promo-grid h3{
-  font-size:14px;
-  margin:6px 0;
-}
-
-.price-promo{
-  font-size:16px;
-}
-
-.price-normal{
-  font-size:12px;
-}
-
-.price-normal{
-  text-decoration:line-through;
-  color:#94a3b8;
-  font-size:13px;
-}
-
-.price-promo{
-  font-size:18px;
-  font-weight:800;
-  color:#22c55e;
-}
-/* 🔴🔴🔴 PROMO STYLE END 🔴🔴🔴 */
+/* ================================ */
 
 
 .container{padding:30px}
@@ -363,12 +199,6 @@ footer{
 
 <body>
 
-  <!-- ================================================= -->
-<!-- 🔴🔴🔴 OPSI PRO – DIV BACKGROUND (WAJIB ADA) -->
-<!-- ================================================= -->
-<div class="bg-wrap"></div>
-<!-- ================================================= -->
- 
 <header>
   <img src="logo.png">
   <h3>Fendy Freelance Store</h3>
@@ -383,27 +213,29 @@ footer{
 
   <!-- 🔴 TAMBAHAN: RUNNING TEXT -->
 <div class="running-text">
-  <div class="marquee">
-    <div class="marquee__group">
-      <span>⚠️ HATI-HATI PENIPUAN! TRANSAKSI HANYA MELALUI WA ADMIN RESMI FENDY FREELANCE STORE • WA RESMI HANYA 0821-5371-9616 • FREE ONGKIR AREA SINGKAWANG DAN SEKITARNYA • KETERSEDIAAN STOK TIDAK SELALU READY •
-      HARGA DAPAT BERUBAH SEWAKTU-WAKTU TANPA PEMBERITAHUAN •</span>
-    </div>
-    <div class="marquee__group">
-      <span>⚠️ HATI-HATI PENIPUAN! TRANSAKSI HANYA MELALUI WA ADMIN RESMI FENDY FREELANCE STORE • WA RESMI HANYA 0821-5371-9616 • FREE ONGKIR AREA SINGKAWANG DAN SEKITARNYA • KETERSEDIAAN STOK TIDAK SELALU READY •
-      HARGA DAPAT BERUBAH SEWAKTU-WAKTU TANPA PEMBERITAHUAN •</span>
-    </div>
+  <div class="running-track">
+    <span>
+      ⚠️ HATI-HATI PENIPUAN! 
+      TRANSAKSI HANYA MELALUI WA ADMIN RESMI FENDY FREELANCE STORE • 
+      WA RESMI HANYA 0821-5371-9616 SAJA • 
+      FREE ONGKIR AREA SINGKAWANG DAN SEKITAR • 
+      KONFIRMASI PEMBAYARAN LANGSUNG KE WA ADMIN RESMI•
+      KETERSEDIAAN STOK TIDAK SELALU READY • HARGA DAPAT BERUBAH SEWAKTU-WAKTU TANPA PEMBERITAHUAN •
+    </span>
+
+    <!-- DUPLIKAT -->
+    <span>
+      ⚠️ HATI-HATI PENIPUAN! 
+      TRANSAKSI HANYA MELALUI WA ADMIN RESMI FENDY FREELANCE STORE •
+      WA RESMI HANYA 0821-5371-9616 SAJA • 
+      FREE ONGKIR AREA SINGKAWANG • 
+      KONFIRMASI PEMBAYARAN LANGSUNG KE WA ADMIN RESMI •
+      KETERSEDIAAN STOK TIDAK SELALU READY • HARGA DAPAT BERUBAH SEWAKTU-WAKTU TANPA PEMBERITAHUAN •
+    </span>
   </div>
 </div>
 
 
-
-</section>
-<!-- 🔴 PROMO / FLASH SALE (AUTO HIDE) -->
-<section id="promoSection" style="display:none">
-  <div class="promo-box">
-    <div class="promo-title">🔥 PROMO TERBATAS 🔥</div>
-    <div id="promoView" class="promo-grid"></div>
-  </div>
 </section>
 
 <section class="container">
@@ -436,9 +268,7 @@ let kategori=[], brand=[], produk=[], cart=[];
 let produkSiap = false;
 // 🔴🔴🔴 TAMBAHAN ANTI LAG SEARCH
 let searchTimer = null;
-let fromPromo = false;
-// 🔴 TAMBAHAN: SIMPAN POSISI KLIK PRODUK
-let lastProductScroll = 0;
+
 
 // 🔴 WAJIB: GLOBAL SEARCH
 const search = document.getElementById("search");
@@ -451,13 +281,7 @@ const zoomImg=document.getElementById("zoomImg");
 
 /* 🔴 TAMBAHAN: WA ADMIN (TIDAK DARI CSV) */
 const WA_ADMIN = "6282153719616";
-/* 🔴 HARGA AKTIF (PROMO / NORMAL) */
-function hargaAktif(p){
-  if(p.harga_promo && p.harga_promo > 0 && p.harga_promo < p.harga){
-    return p.harga_promo;
-  }
-  return p.harga;
-}
+
 
 /* NAV STATE */
 /* ================= FIX SCROLL (TANPA GANGGU KODING LAIN) ================= */
@@ -466,12 +290,10 @@ let nav={
   kategori:null,
   brand:null,
   scroll:{
-  kategori:0,
-  brand:{},
-  produk:{},
-  detail:0 // 🔴 TAMBAHAN
-}
-
+    kategori:0,
+    brand:{},
+    produk:{}
+  }
 };
 
 let searchState = {
@@ -494,7 +316,7 @@ function saveScroll(){
 }
 
 function restoreScroll(){
-  let y = 0;
+  let y=0;
 
   if(nav.level==="kategori"){
     y = nav.scroll.kategori || 0;
@@ -505,15 +327,9 @@ function restoreScroll(){
   else if(nav.level==="produk"){
     y = nav.scroll.produk[nav.brand] || 0;
   }
-  else if(nav.level==="detail"){
-    y = nav.scroll.detail || 0;
-  }
 
-  setTimeout(()=>{
-    window.scrollTo({ top:y, behavior:"auto" });
-  },0);
+  setTimeout(()=>window.scrollTo({top:y,behavior:"auto"}),0);
 }
-
 /* ================= END FIX SCROLL ================= */
 
 /* LOAD CSV */
@@ -534,21 +350,13 @@ fetch("produk.csv")
 .then(r=>r.text())
 .then(t=>{
   produk = t.trim().split("\n").slice(1).map(r=>{
-    const [id,nama,harga,brand,foto,spek,harga_promo] = r.split(",");
-    return {
-      id,
-      nama,
-      harga:Number(harga),
-      brand,
-      foto,
-      spek,
-      harga_promo: harga_promo ? Number(harga_promo) : 0
-    };
+    const [id,nama,harga,brand,foto,spek] = r.split(",");
+    return {id,nama,harga,brand,foto,spek};
   });
 
-  produkSiap = true;
-  tampilPromo(); // 🔴 PANGGIL PROMO
+  produkSiap = true; // ✅ BARU BOLEH SEARCH
 });
+
 
 
 /* VIEW */
@@ -568,7 +376,6 @@ function tampilKategori(){
 }
 
 function tampilBrand(id,nama){
-  saveScroll(); // 🔴 TAMBAH
   nav.level="brand";
   judul.innerText=nama;
   view.innerHTML=`<div class="back" onclick="navBack()">⬅ Kembali</div>`;
@@ -589,77 +396,23 @@ function tampilProduk(id,nama){
 
   produk.filter(p=>p.brand===id).forEach(p=>{
     view.innerHTML+=`
-      <div class="card" onclick="
-  lastProductScroll = window.scrollY;
-  tampilDetail('${p.id}')
-">
-
+      <div class="card" onclick="tampilDetail('${p.id}')">
         <img src="${p.foto}" class="img-produk">
         <h3>${p.nama}</h3>
-        <!-- 🔴 PERBAIKAN -->
-<div class="price">Rp ${hargaAktif(p).toLocaleString("id-ID")}</div>
-
+        <div class="price">Rp ${Number(p.harga).toLocaleString("id-ID")}</div>
       </div>`;
   });
 
   restoreScroll(); // ✅ BALIK KE POSISI TENGAH
 }
 
-/* 🔴🔴🔴 PROMO FUNCTION START 🔴🔴🔴 */
-/* 🔴🔴🔴 PROMO FUNCTION START (BISA DIKLIK & HARGA PROMO) 🔴🔴🔴 */
-function tampilPromo(){
-  const promo = produk.filter(p => p.harga_promo > 0 && p.harga_promo < p.harga);
-  const section = document.getElementById("promoSection");
-  const pv = document.getElementById("promoView");
-
-  if(promo.length === 0){
-    section.style.display = "none";
-    return;
-  }
-
-  section.style.display = "block";
-  pv.innerHTML = "";
-
-  promo.forEach(p=>{
-    const diskon = Math.round(((p.harga - p.harga_promo) / p.harga) * 100);
-
-    pv.innerHTML += `
-      <!-- 🔴 PROMO BISA DIKLIK -->
-      <!-- 🔴 FIX BACK PROMO -->
-<div class="card" onclick="fromPromo=true; tampilDetail('${p.id}')">
-        <img src="${p.foto}">
-        <h3>${p.nama}</h3>
-
-        <div class="price-normal">
-          Rp ${p.harga.toLocaleString("id-ID")}
-        </div>
-
-        <div class="price-promo">
-          Rp ${p.harga_promo.toLocaleString("id-ID")}
-        </div>
-
-        <div style="font-size:12px;color:#facc15">
-          Hemat ${diskon}%
-        </div>
-      </div>
-    `;
-  });
-}
-/* 🔴🔴🔴 PROMO FUNCTION END 🔴🔴🔴 */
-
 function tampilDetail(id){
-
-  // 🔴 SIMPAN POSISI SEBELUM MASUK DETAIL
-  nav.scroll.detail = window.scrollY;
-
-  nav.level = "detail";
-
 
   // 🔴🔴🔴 JIKA DARI SEARCH, SIMPAN SCROLL SEARCH
   if(searchState.aktif){
     searchState.scroll = window.scrollY;
   }else{
-    saveScroll(); // default kategori / brand 
+    saveScroll(); // default kategori / brand / produk
   }
 
   nav.level="detail";
@@ -670,9 +423,7 @@ function tampilDetail(id){
     <div class="card">
       <img src="${p.foto}" class="img-produk">
       <h2>${p.nama}</h2>
-      <!-- 🔴 PERBAIKAN -->
-<div class="price">Rp ${hargaAktif(p).toLocaleString("id-ID")}</div>
-
+      <div class="price">Rp ${Number(p.harga).toLocaleString("id-ID")}</div>
       <ul>${p.spek.split(";").map(s=>`<li>${s}</li>`).join("")}</ul>
 
       <!-- TAMBAHAN QTY + - -->
@@ -684,65 +435,57 @@ function tampilDetail(id){
     </div>`;
 }
 
-/* 🔴 RESET SEARCH INPUT */
-function resetSearch(){
-  search.value = "";          // kosongkan input
-  searchState.aktif = false;
-  searchState.keyword = "";
-  searchState.scroll = 0;
-}
-
-
 /* NAV BACK */
 function navBack(){
-  /* 🔴 JIKA DARI SEARCH & KEMBALI KE KATEGORI */
-  if(nav.level === "search"){
-    resetSearch();          // ⬅ AUTO HILANGKAN TEKS SEARCH
-    nav.level = "kategori";
-    tampilKategori();
-    restoreScroll();
-    return;
-  }
 
+  // 🔴🔴🔴 PRIORITAS SEARCH
   if(nav.level==="detail" && searchState.aktif){
     nav.level="search";
     renderSearchUlang();
     return;
   }
 
-  if(nav.level==="detail" && fromPromo){
-    fromPromo=false;
-    nav.level="kategori";
-    tampilKategori();
-    restoreScroll();
-    return;
-  }
-
   if(nav.level==="detail"){
-  nav.level="produk";
-  tampilProduk(nav.brand,"");
-
-  // 🔴 BALIK KE POSISI SAAT KLIK PRODUK
-  setTimeout(()=>{
-    window.scrollTo({
-      top: lastProductScroll,
-      behavior: "auto"
-    });
-  },0);
-}
-
+    nav.level="produk";
+    tampilProduk(nav.brand,"");
+  }
   else if(nav.level==="produk"){
     nav.level="brand";
     tampilBrand(nav.kategori,"");
-    restoreScroll();
   }
   else{
     nav.level="kategori";
     tampilKategori();
-    restoreScroll();
   }
 }
+/* 🔴🔴🔴 RESTORE SEARCH 🔴🔴🔴 */
+function renderSearchUlang(){
+  judul.innerText = "Hasil Pencarian";
+  view.innerHTML = `<div class="back" onclick="navBack()">⬅ Kembali</div>`;
 
+  const hasil = produk.filter(p =>
+    p.nama && p.nama.toLowerCase().includes(searchState.keyword)
+  );
+
+  if(hasil.length===0){
+    view.innerHTML+=`<p style="text-align:center">Produk tidak ditemukan</p>`;
+    return;
+  }
+
+  hasil.forEach(p=>{
+    view.innerHTML+=`
+      <div class="card" onclick="tampilDetail('${p.id}')">
+        <img src="${p.foto}">
+        <h3>${p.nama}</h3>
+        <div class="price">Rp ${Number(p.harga).toLocaleString("id-ID")}</div>
+      </div>`;
+  });
+
+  // 🔴🔴🔴 BALIK KE POSISI AWAL
+  setTimeout(()=>{
+    window.scrollTo({top:searchState.scroll,behavior:"auto"});
+  },0);
+}
 
 /* ================= RESTORE SEARCH TANPA REFRESH ================= */
 function renderSearchUlang(){
@@ -783,94 +526,77 @@ function addCart(p){
 
 
 /* TAMBAHAN */
-/* 🔴🔴🔴 QTY + - (PAKAI HARGA PROMO) 🔴🔴🔴 */
-function ubahQty(id, delta){
-  const p = produk.find(x => x.id === id);
-  let item = cart.find(x => x.id === id);
+function ubahQty(id,delta){
+const p=produk.find(x=>x.id===id);
+let item=cart.find(x=>x.id===id);
 
-  if(!item && delta > 0){
-    cart.push({
-      id: p.id,
-      qty: 1
-    });
-    item = cart.find(x => x.id === id);
-  }
-  else if(item){
-    item.qty += delta;
-    if(item.qty <= 0){
-      cart = cart.filter(x => x.id !== id);
-      item = null;
-    }
-  }
 
-  const el = document.getElementById("qty-" + id);
-  if(el) el.innerText = item ? item.qty : 0;
-
-  updateCart();
+if(!item && delta>0){
+cart.push({...p,qty:1});
+item=cart.find(x=>x.id===id);
+}else if(item){
+item.qty+=delta;
+if(item.qty<=0){
+cart=cart.filter(x=>x.id!==id);
+item=null;
 }
+}
+
+
+const el=document.getElementById("qty-"+id);
+if(el) el.innerText=item?item.qty:0;
+updateCart();
+}
+
 
 function updateCart(){
 cartCount.innerText=cart.reduce((a,b)=>a+b.qty,0);
 }
 
 
-/* 🔴🔴🔴 OPEN CART (HARGA PROMO) 🔴🔴🔴 */
 function openCart(){
-  cartBox.style.display = "block";
-  cartList.innerHTML = "";
-  let total = 0;
-
-  cart.forEach(item=>{
-    const p = produk.find(x => x.id === item.id);
-    const harga = hargaAktif(p); // 🔴 PROMO MASUK
-    const sub = harga * item.qty;
-    total += sub;
-
-    cartList.innerHTML += `
-      <div class="cart-item">
-        <div>${p.nama} (${item.qty})</div>
-        <div>Rp ${sub.toLocaleString("id-ID")}</div>
-      </div>
-    `;
-  });
-
-  cartTotal.innerText = "TOTAL: Rp " + total.toLocaleString("id-ID");
+cartBox.style.display="block";
+cartList.innerHTML="";
+let total=0;
+cart.forEach(p=>{
+const sub=p.qty*p.harga;
+total+=sub;
+cartList.innerHTML+=`
+<div class="cart-item">
+<div>${p.nama} (${p.qty})</div>
+<div>Rp ${sub.toLocaleString("id-ID")}</div>
+</div>`;
+});
+cartTotal.innerText="TOTAL: Rp "+total.toLocaleString("id-ID");
 }
-
-/* 🔴 FIX TOMBOL TUTUP KERANJANG */
-function closeCart(){
-  cartBox.style.display = "none";
-}
-
+function closeCart(){cartBox.style.display="none"}
 
 /* ===== INI SATU-SATUNYA BAGIAN YANG DIPERBAIKI ===== */
-/* 🔴🔴🔴 CHECKOUT WA (HARGA PROMO MASUK) 🔴🔴🔴 */
 function checkoutWA(){
-  if(cart.length === 0){
-    alert("Keranjang masih kosong");
-    return;
-  }
-
-  let text = "Halo, saya mau order:%0A%0A";
-  let total = 0;
-
-  cart.forEach((item,i)=>{
-    const p = produk.find(x => x.id === item.id);
-    const harga = hargaAktif(p); // 🔴 PROMO DIPAKAI
-    const sub = harga * item.qty;
-    total += sub;
-
-    text += `${i+1}. ${p.nama}%0A`;
-    text += `Harga: Rp ${harga.toLocaleString("id-ID")}%0A`;
-    text += `Qty: ${item.qty}%0A`;
-    text += `Subtotal: Rp ${sub.toLocaleString("id-ID")}%0A%0A`;
-  });
-
-  text += `TOTAL: Rp ${total.toLocaleString("id-ID")}`;
-
-  window.open(`https://wa.me/${WA_ADMIN}?text=${text}`, "_blank");
+if(cart.length===0){
+alert("Keranjang masih kosong");
+return;
 }
 
+
+let text="Halo, saya mau order:%0A%0A";
+let total=0;
+
+
+cart.forEach((p,i)=>{
+const sub=p.harga*p.qty;
+total+=sub;
+text+=`${i+1}. ${p.nama}%0A`;
+text+=`Qty: ${p.qty}%0A`;
+text+=`Subtotal: Rp ${sub.toLocaleString("id-ID")}%0A%0A`;
+});
+
+
+text+=`TOTAL: Rp ${total.toLocaleString("id-ID")}`;
+
+/* 🔴 DIUBAH: WA TIDAK LAGI DARI CSV */
+window.open(`https://wa.me/${WA_ADMIN}?text=${text}`,"_blank");
+}
 
 /* ================================================ */
 
