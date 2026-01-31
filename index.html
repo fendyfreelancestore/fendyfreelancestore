@@ -6,6 +6,11 @@
 <title>Fendy Freelance Store</title>
 
 <style>
+  html{
+  background:#020617;
+  overscroll-behavior: none;
+}
+
 :root{
   --primary:#e11d48;
   --card:rgba(2,6,23,.75);
@@ -26,18 +31,17 @@ body{
 /* 🔴 BACKGROUND DIKUNCI DI LAYER SENDIRI */
 .bg-wrap{
   position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  inset:0;
   z-index:-1;
 
   background:
     linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
     url("bg.jpg") center/cover no-repeat;
 
-  transform:translateZ(0); /* 🔥 fix white flash mobile */
+  transform:translateZ(0);
+  will-change: transform;
 }
+
 
 @media (max-width:768px){
   .bg-wrap{
