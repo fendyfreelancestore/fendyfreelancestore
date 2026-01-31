@@ -23,16 +23,21 @@ body{
   color:var(--text);
   min-height:100vh;
 
-  background:#020617; /* ⬅ warna dasar anti putih */
+  background:#020617;
   overflow-x:hidden;
+
+  position:relative;
+  z-index:1;   /* ⬅ body DI ATAS background */
 }
+
 
 
 /* 🔴 BACKGROUND DIKUNCI DI LAYER SENDIRI */
 .bg-wrap{
   position:fixed;
   inset:0;
-  z-index:-1;
+  z-index:0;               /* ⬅ JANGAN -1 */
+  pointer-events:none;
 
   background:
     linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
@@ -41,7 +46,6 @@ body{
   transform:translateZ(0);
   will-change: transform;
 }
-
 
 @media (max-width:768px){
   .bg-wrap{
@@ -747,35 +751,6 @@ function navBack(){
   }
 }
 
-
-/* 🔴🔴🔴 RESTORE SEARCH 🔴🔴🔴 */
-function renderSearchUlang(){
-  judul.innerText = "Hasil Pencarian";
-  view.innerHTML = `<div class="back" onclick="navBack()">⬅ Kembali</div>`;
-
-  const hasil = produk.filter(p =>
-    p.nama && p.nama.toLowerCase().includes(searchState.keyword)
-  );
-
-  if(hasil.length===0){
-    view.innerHTML+=`<p style="text-align:center">Produk tidak ditemukan</p>`;
-    return;
-  }
-
-  hasil.forEach(p=>{
-    view.innerHTML+=`
-      <div class="card" onclick="tampilDetail('${p.id}')">
-        <img src="${p.foto}">
-        <h3>${p.nama}</h3>
-        <div class="price">Rp ${hargaAktif(p).toLocaleString("id-ID")}</div>
-      </div>`;
-  });
-
-  // 🔴🔴🔴 BALIK KE POSISI AWAL
-  setTimeout(()=>{
-    window.scrollTo({top:searchState.scroll,behavior:"auto"});
-  },0);
-}
 
 /* ================= RESTORE SEARCH TANPA REFRESH ================= */
 function renderSearchUlang(){
