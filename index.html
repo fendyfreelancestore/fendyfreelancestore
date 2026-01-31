@@ -12,17 +12,19 @@
   --text:#f1f5f9;
 }
 *{box-sizing:border-box}
+html, body{
+  background:#020617;
+  overscroll-behavior:none;
+}
+
 body{
   margin:0;
   font-family:Segoe UI,Arial,sans-serif;
   color:var(--text);
   min-height:100vh;
-  background:
-    linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
-    url("bg.jpg") center/cover no-repeat fixed;
+  overflow-x:hidden;
 }
 
-/* 🔴 BACKGROUND DIKUNCI DI LAYER SENDIRI */
 .bg-wrap{
   position:fixed;
   inset:0;
@@ -30,8 +32,9 @@ body{
   background:
     linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
     url("bg.jpg") center/cover no-repeat;
+  will-change:transform;
 }
-/* ================================================= */
+
 
 header{
   display:flex;
