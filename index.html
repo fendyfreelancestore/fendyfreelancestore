@@ -30,7 +30,14 @@ body{
     linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
     url("bg.jpg") center/cover no-repeat;
 }
-
+/* MOBILE → FOTO UTUH */
+@media (max-width:768px){
+  body{
+    background:
+      linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
+      url("bg.jpg") center/contain no-repeat;
+  }
+}
 
 header{
   display:flex;
