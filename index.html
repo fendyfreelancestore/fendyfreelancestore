@@ -12,6 +12,15 @@
   --text:#f1f5f9;
 }
 *{box-sizing:border-box}
+/* 🔴 ANTI PUTIH MOBILE (WAJIB) */
+html, body{
+  margin:0;
+  padding:0;
+  background:#020617;
+  overflow-x:hidden;
+}
+
+/* 🔴 BODY DENGAN BACKGROUND FOTO (FIX MOBILE) */
 body{
   margin:0;
   font-family:Segoe UI,Arial,sans-serif;
@@ -19,19 +28,9 @@ body{
   min-height:100vh;
   background:
     linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
-    url("bg.jpg") center/cover no-repeat fixed;
-}
-
-/* 🔴 BACKGROUND DIKUNCI DI LAYER SENDIRI */
-.bg-wrap{
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  background:
-    linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
     url("bg.jpg") center/cover no-repeat;
 }
-/* ================================================= */
+
 
 header{
   display:flex;
