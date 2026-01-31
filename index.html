@@ -22,37 +22,9 @@ body{
   font-family:Segoe UI,Arial,sans-serif;
   color:var(--text);
   min-height:100vh;
-
-  background:#020617;
-  overflow-x:hidden;
-
-  position:relative;
-  z-index:1;   /* ⬅ body DI ATAS background */
-}
-
-
-
-/* 🔴 BACKGROUND DIKUNCI DI LAYER SENDIRI */
-.bg-wrap{
-  position:fixed;
-  inset:0;
-  z-index:0;               /* ⬅ JANGAN -1 */
-  pointer-events:none;
-
   background:
     linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
-    url("bg.jpg") center/cover no-repeat;
-
-  transform:translateZ(0);
-  will-change: transform;
-}
-
-@media (max-width:768px){
-  .bg-wrap{
-    background:
-      linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
-      url("bg.jpg") center/contain no-repeat;
-  }
+    url("bg.jpg") center/cover no-repeat fixed;
 }
 
 header{
