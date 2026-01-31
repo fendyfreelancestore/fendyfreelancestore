@@ -12,14 +12,23 @@
   --text:#f1f5f9;
 }
 *{box-sizing:border-box}
-body{
+/* ================================================= */
+/* 🔴🔴🔴 FIX PUTIH MOBILE – GLOBAL (WAJIB) */
+/* ================================================= */
+html, body{
   margin:0;
+  padding:0;
+  background:#020617;        /* ⬅ anti putih */
+  overscroll-behavior: none; /* ⬅ anti flash */
+}
+
+/* ================================================= */
+/* BODY UTAMA */
+/* ================================================= */
+body{
   font-family:Segoe UI,Arial,sans-serif;
   color:var(--text);
   min-height:100vh;
-  background:
-    linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
-    url("bg.jpg") center/cover no-repeat fixed;
 }
 
 /* 🔴 BACKGROUND DIKUNCI DI LAYER SENDIRI */
@@ -30,7 +39,11 @@ body{
   background:
     linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
     url("bg.jpg") center/cover no-repeat;
+
+  will-change: transform;        /* 🔴 KUNCI GPU */
+  transform: translateZ(0);      /* 🔴 PAKSA RENDER */
 }
+
 /* ================================================= */
 
 header{
@@ -354,7 +367,7 @@ footer{
 <!-- ================================================= -->
 <div class="bg-wrap"></div>
 <!-- ================================================= -->
- 
+
 <header>
   <img src="logo.png">
   <h3>Fendy Freelance Store</h3>
@@ -729,35 +742,6 @@ function navBack(){
   }
 }
 
-
-/* 🔴🔴🔴 RESTORE SEARCH 🔴🔴🔴 */
-function renderSearchUlang(){
-  judul.innerText = "Hasil Pencarian";
-  view.innerHTML = `<div class="back" onclick="navBack()">⬅ Kembali</div>`;
-
-  const hasil = produk.filter(p =>
-    p.nama && p.nama.toLowerCase().includes(searchState.keyword)
-  );
-
-  if(hasil.length===0){
-    view.innerHTML+=`<p style="text-align:center">Produk tidak ditemukan</p>`;
-    return;
-  }
-
-  hasil.forEach(p=>{
-    view.innerHTML+=`
-      <div class="card" onclick="tampilDetail('${p.id}')">
-        <img src="${p.foto}">
-        <h3>${p.nama}</h3>
-        <div class="price">Rp ${hargaAktif(p).toLocaleString("id-ID")}</div>
-      </div>`;
-  });
-
-  // 🔴🔴🔴 BALIK KE POSISI AWAL
-  setTimeout(()=>{
-    window.scrollTo({top:searchState.scroll,behavior:"auto"});
-  },0);
-}
 
 /* ================= RESTORE SEARCH TANPA REFRESH ================= */
 function renderSearchUlang(){
