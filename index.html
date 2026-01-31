@@ -21,6 +21,18 @@ body{
     linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
     url("bg.jpg") center/cover no-repeat fixed;
 }
+
+/* 🔴 BACKGROUND DIKUNCI DI LAYER SENDIRI */
+.bg-wrap{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:
+    linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
+    url("bg.jpg") center/cover no-repeat;
+}
+/* ================================================= */
+
 header{
   display:flex;
   align-items:center;
@@ -337,6 +349,12 @@ footer{
 
 <body>
 
+  <!-- ================================================= -->
+<!-- 🔴🔴🔴 OPSI PRO – DIV BACKGROUND (WAJIB ADA) -->
+<!-- ================================================= -->
+<div class="bg-wrap"></div>
+<!-- ================================================= -->
+ 
 <header>
   <img src="logo.png">
   <h3>Fendy Freelance Store</h3>
