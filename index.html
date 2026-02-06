@@ -85,18 +85,32 @@ header{
 @media (max-width: 768px){
 
   :root{
-    --lampion-width: 260px;   /* sedikit lebih besar */
-    --lampion-top: 35px;      /* TURUNKAN biar tidak nutup judul */
-    --lampion-offset: 12vw;   /* DORONG KE TENGAH */
+    --lampion-width: 260px;   /* ukuran tetap besar */
+    --lampion-top: 55px;      /* TURUNKAN supaya tidak nutup SELAMAT DATANG */
+    --lampion-offset: 6vw;    /* standar untuk full mobile */
   }
 
   .header-lampion{
-    height: 220px;            /* biar proporsional */
+    height: 230px;
   }
 
-  /* Biar header tidak ketutup lampion */
+  /* BERI RUANG AGAR JUDUL & SEARCH TIDAK TERTINDIH */
   header{
-    padding-top: 80px;  /* BERI RUANG UNTUK LAMPION */
+    padding-top: 95px;
+  }
+}
+
+
+@media (min-width: 769px) and (max-width: 1024px){
+
+  :root{
+    --lampion-width: 360px;   /* lebih besar dari mobile */
+    --lampion-top: 28px;      /* lebih naik dikit biar gantung */
+    --lampion-offset: 2vw;    /* KIRI LEBIH KE KIRI, KANAN LEBIH KE KANAN */
+  }
+
+  .header-lampion{
+    height: 300px;
   }
 }
 
