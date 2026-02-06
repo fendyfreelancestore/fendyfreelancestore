@@ -82,6 +82,27 @@ header{
   right: var(--lampion-offset);
 }
 
+@media (max-width: 768px){
+
+  :root{
+    --lampion-width: 240px;   /* lebih kecil di HP */
+    --lampion-top: -5px;      /* agak naik biar gantung rapi */
+    --lampion-offset: 1vw;    
+  }
+
+  .header-lampion{
+    height: 200px;            /* lebih pendek di HP */
+  }
+
+  header{
+    padding: 14px 16px;       /* header jadi rapi */
+  }
+
+  header img{
+    width: 32px;              /* logo lebih kecil */
+  }
+}
+
 
 .hero{text-align:center;padding:70px 20px}
 .search-box input{
