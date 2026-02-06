@@ -12,6 +12,12 @@
   /* ===== FIX SUPAYA POSITION:FIXED BENAR-BENAR DI LAYAR ===== */
 }
 
+html, body{
+  overflow-x: hidden;   /* 🔴 PENTING: cegah halaman melebar ke kanan */
+  max-width: 100vw;
+}
+
+
 html, body {
   transform: none !important;
   position: static !important;}
@@ -57,14 +63,16 @@ header{
 
 /* ===== LAMPION VIDEO ===== */
 .header-lampion{
-  position: absolute;   /* ⬅️ bukan fixed lagi */
-  top: var(--lampion-top);   /* ✅ ikut setelan Anda */
+  position: absolute;
+  top: var(--lampion-top);
   height: 360px;
   width: var(--lampion-width);
+  max-width: 100vw;   /* 🔴 TAMBAHAN PENTING */
   pointer-events:none;
   overflow:hidden;
   z-index: 10;
 }
+
 
 .header-lampion video{
   height:100%;
@@ -84,40 +92,23 @@ header{
 
 @media (max-width: 768px){
 
-  /* ===== UKURAN LOGO & HEADER (BIAR NORMAL) ===== */
-  header{
-    padding: 14px 16px;      /* jangan terlalu tinggi */
-    justify-content: flex-start;
-  }
-
-  header img{
-    width: 32px;             /* logo kembali normal */
-  }
-
-  header h3{
-    font-size: 16px;         /* tulisan tidak kebesaran */
-  }
-
-  /* ===== SETELAN LAMPION MOBILE (VERSI RAPI) ===== */
   :root{
-    --lampion-width: 260px;   /* besar tapi proporsional */
-    --lampion-top: 33px;      /* turun sedikit supaya tidak nutup teks */
+    --lampion-width: 260px;
+    --lampion-top: 33px;
   }
 
   .header-lampion{
     height: 220px;
   }
 
-  /* ===== POSISI LAMPION DARI TENGAH (PALING STABIL) ===== */
   .lampion-kiri{
-    left: calc(50% - 260px);  /* geser dari tengah ke kiri */
+    left: calc(50% - 220px);
   }
 
   .lampion-kanan{
-    right: calc(50% - 260px); /* geser dari tengah ke kanan */
+    right: calc(50% - 220px);
   }
 }
-
 
 
 @media (min-width: 769px) and (max-width: 1024px){
