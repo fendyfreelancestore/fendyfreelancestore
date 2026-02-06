@@ -73,6 +73,27 @@ header{
   z-index: 10;
 }
 
+/* ===== RING KAIT LAMPION (DESKTOP) ===== */
+.header-lampion::before{
+  content:"";
+  position:absolute;
+
+  /* posisi dikunci RELATIF ke tinggi lampion */
+  top: 18%;      
+
+  left:50%;
+  transform:translate(-50%, -50%);
+
+  width:12px;
+  height:12px;
+  border:3px solid #facc15;
+  border-radius:50%;
+  background:rgba(0,0,0,.45);
+  z-index:12;
+
+  shape-rendering: geometricPrecision; /* biar tajam saat zoom */
+}
+
 
 .header-lampion video{
   height:100%;
@@ -108,21 +129,39 @@ header{
   .lampion-kanan{
     right: calc(50% - 260px);
   }
+
+  /* 🔴 RING KHUSUS MOBILE (BIAR PAS DI UJUNG TALI) */
+  .header-lampion::before{
+    top: 17%;      /* lebih turun dikit biar pas di HP */
+    width:9px;
+    height:9px;
+    border-width:2px;
+  }
 }
+
 
 
 @media (min-width: 769px) and (max-width: 1024px){
 
   :root{
-    --lampion-width: 360px;   /* lebih besar dari mobile */
-    --lampion-top: 28px;      /* lebih naik dikit biar gantung */
-    --lampion-offset: 2vw;    /* KIRI LEBIH KE KIRI, KANAN LEBIH KE KANAN */
+    --lampion-width: 360px;
+    --lampion-top: 28px;
+    --lampion-offset: 2vw;
   }
 
   .header-lampion{
     height: 300px;
   }
+
+  /* 🔴 RING KHUSUS TABLET */
+  .header-lampion::before{
+    top: 17%;      /* sedikit turun dari desktop */
+    width:11px;
+    height:11px;
+    border-width:3px;
+  }
 }
+
 
 
 .hero{text-align:center;padding:70px 20px}
