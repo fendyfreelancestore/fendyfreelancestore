@@ -85,22 +85,18 @@ header{
 @media (max-width: 768px){
 
   :root{
-    --lampion-width: 240px;
-    --lampion-top: 6px;   /* ✅ turun sedikit, lebih natural */
-    --lampion-offset: 1vw;    
+    --lampion-width: 260px;   /* sedikit lebih besar */
+    --lampion-top: 35px;      /* TURUNKAN biar tidak nutup judul */
+    --lampion-offset: 12vw;   /* DORONG KE TENGAH */
   }
-
 
   .header-lampion{
-    height: 200px;            /* lebih pendek di HP */
+    height: 220px;            /* biar proporsional */
   }
 
+  /* Biar header tidak ketutup lampion */
   header{
-    padding: 14px 16px;       /* header jadi rapi */
-  }
-
-  header img{
-    width: 32px;              /* logo lebih kecil */
+    padding-top: 80px;  /* BERI RUANG UNTUK LAMPION */
   }
 }
 
