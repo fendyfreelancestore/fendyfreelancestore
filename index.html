@@ -84,27 +84,37 @@ header{
 
 @media (max-width: 768px){
 
+  /* ===== UKURAN LOGO & HEADER (BIAR NORMAL) ===== */
+  header{
+    padding: 14px 16px;      /* jangan terlalu tinggi */
+    justify-content: flex-start;
+  }
+
+  header img{
+    width: 32px;             /* logo kembali normal */
+  }
+
+  header h3{
+    font-size: 16px;         /* tulisan tidak kebesaran */
+  }
+
+  /* ===== SETELAN LAMPION MOBILE (VERSI RAPI) ===== */
   :root{
-    --lampion-width: 260px;   /* tetap besar */
-    --lampion-top: 60px;      /* turun supaya tidak ganggu teks */
+    --lampion-width: 260px;   /* besar tapi proporsional */
+    --lampion-top: 55px;      /* turun sedikit supaya tidak nutup teks */
   }
 
   .header-lampion{
-    height: 230px;
+    height: 220px;
   }
 
-  /* ===== POSISI PALING AMAN DI MOBILE ===== */
+  /* ===== POSISI LAMPION DARI TENGAH (PALING STABIL) ===== */
   .lampion-kiri{
-    left: calc(50% - 210px);   /* geser dari TENGAH ke kiri */
+    left: calc(50% - 200px);  /* geser dari tengah ke kiri */
   }
 
   .lampion-kanan{
-    right: calc(50% - 210px);  /* geser dari TENGAH ke kanan */
-  }
-
-  /* beri ruang agar teks & search tidak ketutup */
-  header{
-    padding-top: 100px;
+    right: calc(50% - 200px); /* geser dari tengah ke kanan */
   }
 }
 
