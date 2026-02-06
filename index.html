@@ -9,7 +9,12 @@
   html{
   background:#020617;
   overscroll-behavior: none;
+  /* ===== FIX SUPAYA POSITION:FIXED BENAR-BENAR DI LAYAR ===== */
 }
+
+html, body {
+  transform: none !important;
+  position: static !important;}
 
 :root{
   --primary:#e11d48;
@@ -35,6 +40,89 @@ header{
   background:rgba(2,6,23,.85);
 }
 header img{width:42px}
+
+/* ===== LAMPION VIDEO KIRI & KANAN ===== */
+/* ===== SETELAN LAMPION (ATUR DI SINI SAJA) ===== */
+:root{
+  --lampion-width: 420px;   /* 🔥 SUPER GEDE */
+  --lampion-top: 16px;     /* mulai menggantung dari atas layar */
+  --lampion-offset: 6vw;    /* posisi mendekati titik merah Anda */
+}
+
+
+/* ===== LAMPION VIDEO ===== */
+header{
+  position: relative;   /* penting supaya lampion nempel ke header */
+}
+
+/* ===== LAMPION VIDEO ===== */
+.header-lampion{
+  position: absolute;   /* ⬅️ bukan fixed lagi */
+  top: var(--lampion-top);   /* ✅ ikut setelan Anda */
+  height: 360px;
+  width: var(--lampion-width);
+  pointer-events:none;
+  overflow:hidden;
+  z-index: 10;
+}
+
+.header-lampion video{
+  height:100%;
+  width:100%;
+  object-fit:contain;
+}
+
+/* posisi kiri */
+.lampion-kiri{
+  left: var(--lampion-offset);
+}
+
+/* posisi kanan */
+.lampion-kanan{
+  right: var(--lampion-offset);
+}
+
+@media (max-width: 768px){
+
+  :root{
+    --lampion-width: 260px;   /* tetap besar */
+    --lampion-top: 60px;      /* turun supaya tidak ganggu teks */
+  }
+
+  .header-lampion{
+    height: 230px;
+  }
+
+  /* ===== POSISI PALING AMAN DI MOBILE ===== */
+  .lampion-kiri{
+    left: calc(50% - 210px);   /* geser dari TENGAH ke kiri */
+  }
+
+  .lampion-kanan{
+    right: calc(50% - 210px);  /* geser dari TENGAH ke kanan */
+  }
+
+  /* beri ruang agar teks & search tidak ketutup */
+  header{
+    padding-top: 100px;
+  }
+}
+
+
+
+@media (min-width: 769px) and (max-width: 1024px){
+
+  :root{
+    --lampion-width: 360px;   /* lebih besar dari mobile */
+    --lampion-top: 28px;      /* lebih naik dikit biar gantung */
+    --lampion-offset: 2vw;    /* KIRI LEBIH KE KIRI, KANAN LEBIH KE KANAN */
+  }
+
+  .header-lampion{
+    height: 300px;
+  }
+}
+
 
 .hero{text-align:center;padding:70px 20px}
 .search-box input{
@@ -349,10 +437,32 @@ footer{
 <div class="bg-wrap"></div>
 <!-- ================================================= -->
  
-<header>
+<!-- ===== VIEWPORT LAYER (BENAR-BENAR TIDAK SCROLL) ===== -->
+<div class="lampion-layer">
+
+ <header>
+
+  <!-- LAMPION KIRI -->
+  <div class="header-lampion lampion-kiri">
+    <video autoplay loop muted playsinline>
+      <source src="lampion.webm" type="video/webm">
+    </video>
+  </div>
+
   <img src="logo.png">
   <h3>Fendy Freelance Store</h3>
+
+  <!-- LAMPION KANAN -->
+  <div class="header-lampion lampion-kanan">
+    <video autoplay loop muted playsinline>
+      <source src="lampion.webm" type="video/webm">
+    </video>
+  </div>
+
 </header>
+
+
+
 
 <section class="hero">
   <h2>SELAMAT DATANG</h2>
