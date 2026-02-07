@@ -502,8 +502,6 @@ footer{
 </header>
 
 
-
-
 <section class="hero">
   <h2>SELAMAT DATANG</h2>
   <p>Komputer • Laptop • CCTV • Smartphone • Service • Dll</p>
@@ -524,8 +522,6 @@ footer{
     </div>
   </div>
 </div>
-
-
 
 </section>
 <!-- 🔴 PROMO / FLASH SALE (AUTO HIDE) -->
@@ -644,6 +640,16 @@ function restoreScroll(){
   },0);
 }
 
+/* ================= FIX LAMPION TIDAK MUTAR ================= */
+function jagaLampionTetapMutar(){
+  document.querySelectorAll(".header-lampion video").forEach(v=>{
+    v.muted = true;
+    v.loop = true;
+    v.play().catch(()=>{}); 
+  });
+}
+
+
 /* ================= END FIX SCROLL ================= */
 
 /* LOAD CSV */
@@ -694,6 +700,7 @@ function tampilKategori(){
         <p>${k.desk}</p>
       </div>`;
   });
+  jagaLampionTetapMutar();   //
   restoreScroll();
 }
 
@@ -709,6 +716,7 @@ function tampilBrand(id,nama){
         <h3>${b.nama}</h3>
       </div>`;
   });
+  jagaLampionTetapMutar();   //
   restoreScroll();
 }
 
@@ -731,7 +739,7 @@ function tampilProduk(id,nama){
 
       </div>`;
   });
-
+  jagaLampionTetapMutar();   //
   restoreScroll(); // ✅ BALIK KE POSISI TENGAH
 }
 
@@ -812,6 +820,7 @@ function tampilDetail(id){
   <button class="btn-cart" onclick="ubahQty('${p.id}',1)">+</button>
 </div>
     </div>`;
+    jagaLampionTetapMutar();   //
 }
 
 /* 🔴 RESET SEARCH INPUT */
@@ -826,6 +835,7 @@ function resetSearch(){
 /* NAV BACK */
 function navBack(){
   /* 🔴 JIKA DARI SEARCH & KEMBALI KE KATEGORI */
+  jagaLampionTetapMutar();   //
   if(nav.level === "search"){
     resetSearch();          // ⬅ AUTO HILANGKAN TEKS SEARCH
     nav.level = "kategori";
