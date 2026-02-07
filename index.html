@@ -647,32 +647,34 @@ function restoreScroll(){
   },0);
 }
 
-/* ============ FIX LAMPION SEAMLESS (TANPA JEDA) ============ */
+/* ===== 🔥 FIX TOTAL: LAMPION TIDAK BERHENTI + SINKRON KIRI-KANAN ===== */
 function jagaLampionTetapMutar(){
-  document.querySelectorAll(".header-lampion video").forEach(v=>{
 
+  const videos = document.querySelectorAll(".header-lampion video");
+
+  videos.forEach(v => {
     v.muted = true;
     v.playsInline = true;
     v.preload = "auto";
-
-    // play sekali
-    if (!v.dataset.started) {
-      v.dataset.started = "true";
-      v.play().catch(()=>{});
-    }
-
-    // 🔥 TRIK PALING PENTING: reset sebelum benar-benar habis
-    v.addEventListener("timeupdate", ()=>{
-      const sisa = v.duration - v.currentTime;
-
-      // kalau tinggal sedikit, lompat ke awal MULUS
-      if (sisa < 0.05) {   // 50 milidetik sebelum habis
-        v.currentTime = 0;
-        v.play().catch(()=>{});
-      }
-    });
+    v.loop = false; // JANGAN pakai loop bawaan browser
   });
+
+  function playAll(){
+    videos.forEach(v => {
+      v.currentTime = 0;
+      v.play().catch(()=>{});
+    });
+  }
+
+  // 🔴 MAIN TRICK: pakai satu timer global biar sinkron
+  setInterval(() => {
+    playAll();
+  }, 6000); // sesuaikan dengan DURASI video lampion.webm Anda
+
+  // play pertama kali
+  playAll();
 }
+
 
 
 /* ===== PROTEKSI JIKA BROWSER PAUSE (TAB PINDAH / MINIMIZE) ===== */
