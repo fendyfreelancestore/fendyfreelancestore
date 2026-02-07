@@ -640,12 +640,17 @@ function restoreScroll(){
   },0);
 }
 
-/* ================= FIX LAMPION TIDAK MUTAR ================= */
+/* ============ FIX LAMPION HALUS (TANPA NYENDAT) ============ */
 function jagaLampionTetapMutar(){
   document.querySelectorAll(".header-lampion video").forEach(v=>{
+
     v.muted = true;
     v.loop = true;
-    v.play().catch(()=>{}); 
+
+    // ✅ Cuma play kalau memang sedang berhenti
+    if (v.paused) {
+      v.play().catch(()=>{});
+    }
   });
 }
 
