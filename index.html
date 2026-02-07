@@ -99,7 +99,14 @@ header{
   height:100%;
   width:100%;
   object-fit:contain;
+
+  /* 🔴 FIX MULUS GPU */
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
+
+
 
 /* posisi kiri */
 .lampion-kiri{
@@ -484,7 +491,7 @@ footer{
 
   <!-- LAMPION KIRI -->
   <div class="header-lampion lampion-kiri">
-    <video autoplay loop muted playsinline>
+    <video autoplay muted playsinline preload="auto">
       <source src="lampion.webm" type="video/webm">
     </video>
   </div>
@@ -494,7 +501,7 @@ footer{
 
   <!-- LAMPION KANAN -->
   <div class="header-lampion lampion-kanan">
-    <video autoplay loop muted playsinline>
+    <video autoplay muted playsinline preload="auto">
       <source src="lampion.webm" type="video/webm">
     </video>
   </div>
@@ -640,19 +647,43 @@ function restoreScroll(){
   },0);
 }
 
-/* ============ FIX LAMPION HALUS (TANPA NYENDAT) ============ */
+/* ============ FIX LAMPION SEAMLESS (TANPA JEDA) ============ */
 function jagaLampionTetapMutar(){
   document.querySelectorAll(".header-lampion video").forEach(v=>{
 
     v.muted = true;
-    v.loop = true;
+    v.playsInline = true;
+    v.preload = "auto";
 
-    // ✅ Cuma play kalau memang sedang berhenti
-    if (v.paused) {
+    // play sekali
+    if (!v.dataset.started) {
+      v.dataset.started = "true";
       v.play().catch(()=>{});
     }
+
+    // 🔥 TRIK PALING PENTING: reset sebelum benar-benar habis
+    v.addEventListener("timeupdate", ()=>{
+      const sisa = v.duration - v.currentTime;
+
+      // kalau tinggal sedikit, lompat ke awal MULUS
+      if (sisa < 0.05) {   // 50 milidetik sebelum habis
+        v.currentTime = 0;
+        v.play().catch(()=>{});
+      }
+    });
   });
 }
+
+
+/* ===== PROTEKSI JIKA BROWSER PAUSE (TAB PINDAH / MINIMIZE) ===== */
+document.addEventListener("visibilitychange", ()=>{
+  if(!document.hidden){
+    document.querySelectorAll(".header-lampion video").forEach(v=>{
+      if(v.paused) v.play().catch(()=>{});
+    });
+  }
+});
+
 
 
 /* ================= END FIX SCROLL ================= */
@@ -705,7 +736,6 @@ function tampilKategori(){
         <p>${k.desk}</p>
       </div>`;
   });
-  jagaLampionTetapMutar();   //
   restoreScroll();
 }
 
@@ -721,7 +751,6 @@ function tampilBrand(id,nama){
         <h3>${b.nama}</h3>
       </div>`;
   });
-  jagaLampionTetapMutar();   //
   restoreScroll();
 }
 
@@ -744,7 +773,6 @@ function tampilProduk(id,nama){
 
       </div>`;
   });
-  jagaLampionTetapMutar();   //
   restoreScroll(); // ✅ BALIK KE POSISI TENGAH
 }
 
@@ -825,7 +853,6 @@ function tampilDetail(id){
   <button class="btn-cart" onclick="ubahQty('${p.id}',1)">+</button>
 </div>
     </div>`;
-    jagaLampionTetapMutar();   //
 }
 
 /* 🔴 RESET SEARCH INPUT */
@@ -840,7 +867,6 @@ function resetSearch(){
 /* NAV BACK */
 function navBack(){
   /* 🔴 JIKA DARI SEARCH & KEMBALI KE KATEGORI */
-  jagaLampionTetapMutar();   //
   if(nav.level === "search"){
     resetSearch();          // ⬅ AUTO HILANGKAN TEKS SEARCH
     nav.level = "kategori";
@@ -1105,6 +1131,13 @@ document.addEventListener("touchstart", function(e){
   e.stopImmediatePropagation();
   zoomFoto(img.src);
 }, { capture:true, passive:false });
+
+// ✅ START LAMPION SEKALI SAJA (POSISI PALING BAWAH)
+window.addEventListener("load", ()=>{
+  jagaLampionTetapMutar();
+});
+</script>
+
 </script>
 
 </body>
