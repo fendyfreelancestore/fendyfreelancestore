@@ -491,9 +491,17 @@ footer{
 
   <!-- LAMPION KIRI -->
   <div class="header-lampion lampion-kiri">
-    <video autoplay muted playsinline preload="auto">
-      <source src="lampion.webm" type="video/webm">
-    </video>
+   <video
+  muted
+  playsinline
+  autoplay
+  loop
+  preload="metadata"
+  disablepictureinpicture
+>
+  <source src="lampion.webm" type="video/webm">
+</video>
+
   </div>
 
   <img src="logo.png">
@@ -501,9 +509,17 @@ footer{
 
   <!-- LAMPION KANAN -->
   <div class="header-lampion lampion-kanan">
-    <video autoplay muted playsinline preload="auto">
-      <source src="lampion.webm" type="video/webm">
-    </video>
+    <video
+  muted
+  playsinline
+  autoplay
+  loop
+  preload="metadata"
+  disablepictureinpicture
+>
+  <source src="lampion.webm" type="video/webm">
+</video>
+
   </div>
 
 </header>
@@ -647,34 +663,6 @@ function restoreScroll(){
   },0);
 }
 
-/* ===== 🔥 FIX TOTAL: LAMPION TIDAK BERHENTI + SINKRON KIRI-KANAN ===== */
-function jagaLampionTetapMutar(){
-  const videos = document.querySelectorAll(".header-lampion video");
-
-  videos.forEach(v => {
-    v.muted = true;
-    v.playsInline = true;
-    v.preload = "auto";
-    v.loop = false;
-
-    // 🔴 RESET SEKALI SAAT LOAD
-    v.currentTime = 0;
-
-    // 🔴 PUTAR SETELAH BENAR-BENAR SIAP
-    v.addEventListener("canplaythrough", () => {
-      v.play().catch(()=>{});
-    });
-
-    // 🔴 LOOP HALUS TANPA LAG
-    v.addEventListener("ended", () => {
-      v.currentTime = 0;
-      v.play().catch(()=>{});
-    });
-  });
-}
-
-
-
 /* ===== PROTEKSI JIKA BROWSER PAUSE (TAB PINDAH / MINIMIZE) ===== */
 document.addEventListener("visibilitychange", ()=>{
   if(!document.hidden){
@@ -683,7 +671,6 @@ document.addEventListener("visibilitychange", ()=>{
     });
   }
 });
-
 
 
 /* ================= END FIX SCROLL ================= */
@@ -1134,8 +1121,19 @@ document.addEventListener("touchstart", function(e){
 
 // ✅ START LAMPION SEKALI SAJA (POSISI PALING BAWAH)
 window.addEventListener("load", ()=>{
-  jagaLampionTetapMutar();
 });
+
+// 🔒 PROTEKSI AUTOPLAY (ANTI PAUSE SAAT DOM UPDATE)
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    document.querySelectorAll(".header-lampion video").forEach(v => {
+      if (v.paused) {
+        v.play().catch(()=>{});
+      }
+    });
+  }
+});
+
 </script>
 
 </script>
