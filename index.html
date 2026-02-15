@@ -284,9 +284,20 @@ footer{
   <div class="video-card">
   <div class="xiangyun-right">☁  ☁</div>
 
-  <video id="imlekVideo" autoplay muted loop playsinline preload="auto">
-    <source src="总合成01_1 (online-video-cutter.com).mp4" type="video/mp4">
-  </video>
+  <video id="imlekVideo"
+  playsinline
+  webkit-playsinline
+  preload="auto"
+  poster="thumbnail.jpg"
+  controls
+  style="width:100%;border-radius:16px;background:#000;">
+  
+  <source src="imlek.mp4" type="video/mp4">
+  
+  Browser Anda tidak mendukung video.
+</video>
+
+
 </div>
 
 </section>
@@ -330,13 +341,14 @@ footer{
 <script>
 /* AKTIFKAN SUARA SETELAH 1 INTERAKSI USER */
 document.addEventListener("click", function aktifkanSuara(){
-  const v=document.getElementById("imlekVideo");
-  if(v){
-    v.muted=false;
-    v.volume=1;
-    v.play().catch(()=>{});
-  }
-  document.removeEventListener("click", aktifkanSuara);
+  const video = document.getElementById("imlekVideo");
+
+// Coba autoplay muted dulu (browser normal)
+window.addEventListener("load", () => {
+  video.muted = true;
+  video.play().catch(() => {
+    // Kalau IG blok autoplay, biarkan user klik manual
+  });
 });
 
 /* ===== 🔥 FIX TOTAL: LAMPION TIDAK BERHENTI + SINKRON KIRI-KANAN ===== */
