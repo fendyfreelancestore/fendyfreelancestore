@@ -342,21 +342,34 @@ footer{
 <script>
 const video = document.getElementById("imlekVideo");
 
-/* ✅ Autoplay aman */
+/* Autoplay aman */
 window.addEventListener("load", () => {
-  video.muted = true;
-  video.play().catch(() => {});
+  if(video){
+    video.muted = true;
+    video.play().catch(()=>{});
+  }
 });
 
-/* ✅ Paksa loop kalau browser abaikan */
-video.addEventListener("ended", () => {
-  video.currentTime = 0;
-  video.play().catch(() => {});
+/* 🔊 Aktifkan suara setelah 1 klik */
+document.addEventListener("click", function enableSound(){
+  if(video){
+    video.muted = false;
+    video.volume = 1;
+    video.play().catch(()=>{});
+  }
+  document.removeEventListener("click", enableSound);
 });
 
-/* 🔥 Lampion tetap sinkron */
+/* Backup loop */
+if(video){
+  video.addEventListener("ended", () => {
+    video.currentTime = 0;
+    video.play().catch(()=>{});
+  });
+}
+
+/* Lampion sinkron */
 function jagaLampionTetapMutar(){
-
   const videos = document.querySelectorAll(".header-lampion video");
 
   videos.forEach(v => {
@@ -371,12 +384,13 @@ function jagaLampionTetapMutar(){
     });
   }
 
-  setInterval(playAll, 6000); // sesuaikan durasi lampion
+  setInterval(playAll, 6000);
   playAll();
 }
 
 window.addEventListener("load", jagaLampionTetapMutar);
 </script>
+
 
 
 </body>
