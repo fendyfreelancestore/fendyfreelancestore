@@ -284,18 +284,19 @@ footer{
   <div class="video-card">
   <div class="xiangyun-right">☁  ☁</div>
 
-  <video id="imlekVideo"
+ <video id="imlekVideo"
+  autoplay
+  muted
+  loop
   playsinline
   webkit-playsinline
   preload="auto"
   poster="thumbnail.jpg"
-  controls
   style="width:100%;border-radius:16px;background:#000;">
   
   <source src="imlek.mp4" type="video/mp4">
-  
-  Browser Anda tidak mendukung video.
 </video>
+
 
 
 </div>
@@ -339,28 +340,28 @@ footer{
 <footer>© 2026 Fendy Freelance Store</footer>
 
 <script>
-/* AKTIFKAN SUARA SETELAH 1 INTERAKSI USER */
-document.addEventListener("click", function aktifkanSuara(){
-  const video = document.getElementById("imlekVideo");
+const video = document.getElementById("imlekVideo");
 
-// Coba autoplay muted dulu (browser normal)
+/* ✅ Autoplay aman */
 window.addEventListener("load", () => {
   video.muted = true;
-  video.play().catch(() => {
-    // Kalau IG blok autoplay, biarkan user klik manual
-  });
+  video.play().catch(() => {});
 });
 
-/* ===== 🔥 FIX TOTAL: LAMPION TIDAK BERHENTI + SINKRON KIRI-KANAN ===== */
+/* ✅ Paksa loop kalau browser abaikan */
+video.addEventListener("ended", () => {
+  video.currentTime = 0;
+  video.play().catch(() => {});
+});
+
+/* 🔥 Lampion tetap sinkron */
 function jagaLampionTetapMutar(){
 
   const videos = document.querySelectorAll(".header-lampion video");
 
   videos.forEach(v => {
     v.muted = true;
-    v.playsInline = true;
-    v.preload = "auto";
-    v.loop = false; // JANGAN pakai loop bawaan browser
+    v.loop = false;
   });
 
   function playAll(){
@@ -370,21 +371,13 @@ function jagaLampionTetapMutar(){
     });
   }
 
-  // 🔴 MAIN TRICK: pakai satu timer global biar sinkron
-  setInterval(() => {
-    playAll();
-  }, 6000); // sesuaikan dengan DURASI video lampion.webm Anda
-
-  // play pertama kali
+  setInterval(playAll, 6000); // sesuaikan durasi lampion
   playAll();
 }
 
-// ✅ START LAMPION SEKALI SAJA (POSISI PALING BAWAH)
-window.addEventListener("load", ()=>{
-  jagaLampionTetapMutar();
-});
-
+window.addEventListener("load", jagaLampionTetapMutar);
 </script>
+
 
 </body>
 </html>
