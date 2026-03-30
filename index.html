@@ -7,12 +7,15 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#e11d48">
 <link rel="apple-touch-icon" href="logo.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <style>
   html{
   background:#020617;
   overscroll-behavior: none;
 }
+
 
 :root{
   --primary:#e11d48;
@@ -28,6 +31,19 @@ body{
   background:
     linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
     url("bg.jpg") center/cover no-repeat fixed;
+}
+body{
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 🔴 KHUSUS iPHONE */
+@supports (-webkit-touch-callout: none) {
+  body{
+    background:
+      linear-gradient(rgba(2,6,23,.25), rgba(2,6,23,.9)),
+      url("bg.jpg") center/cover no-repeat;
+    background-attachment: scroll; /* WAJIB */
+  }
 }
 
 header{
@@ -1096,36 +1112,43 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
 
-let deferredPrompt;
-let installBtn = document.createElement("button");
+// 🔴 MATIKAN DI iPHONE
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
 
-installBtn.innerText = "📲 Install Aplikasi";
-installBtn.style.position = "fixed";
-installBtn.style.bottom = "90px";
-installBtn.style.right = "20px";
-installBtn.style.padding = "12px 18px";
-installBtn.style.border = "none";
-installBtn.style.borderRadius = "50px";
-installBtn.style.background = "#e11d48";
-installBtn.style.color = "#fff";
-installBtn.style.fontWeight = "bold";
-installBtn.style.display = "none";
-installBtn.style.zIndex = "9999";
+if(!isIOS){
 
-document.body.appendChild(installBtn);
+  let deferredPrompt;
+  let installBtn = document.createElement("button");
 
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  installBtn.style.display = "block";
-});
-
-installBtn.addEventListener("click", async () => {
+  installBtn.innerText = "📲 Install Aplikasi";
+  installBtn.style.position = "fixed";
+  installBtn.style.bottom = "90px";
+  installBtn.style.right = "20px";
+  installBtn.style.padding = "12px 18px";
+  installBtn.style.border = "none";
+  installBtn.style.borderRadius = "50px";
+  installBtn.style.background = "#e11d48";
+  installBtn.style.color = "#fff";
+  installBtn.style.fontWeight = "bold";
   installBtn.style.display = "none";
-  deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  deferredPrompt = null;
-});
+  installBtn.style.zIndex = "9999";
+
+  document.body.appendChild(installBtn);
+
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = "block";
+  });
+
+  installBtn.addEventListener("click", async () => {
+    installBtn.style.display = "none";
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+  });
+
+}
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').then(reg => {
